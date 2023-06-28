@@ -1,0 +1,2 @@
+INSERT INTO livro (id_livro, titulo_livro, author_id_autor, publishing_company_id_editora, genero_livro, isbn_livro) VALUES(1, 'Livro 1', 1, 1, 6,'ISBN123456');
+INSERT INTO livro (id_livro, titulo_livro, author_id_autor, publishing_company_id_editora, genero_livro, isbn_livro) VALUES(2, 'Livro 2', 2, 2, 3,'ISBN789012');
