@@ -22,7 +22,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 public class Reservation {
-	
+
 	@Setter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,14 +37,14 @@ public class Reservation {
 
 	@ManyToOne
 	private User user;
-	
+
 	public Reservation(ReservationDTO dto, Book book, User user) {
 		this(dto.getId(), DateUtils.strToZonedDateTime(dto.getDate()), book, user);
 	}
 
 	public ReservationDTO toDTO() {
-		return new ReservationDTO(id, DateUtils.zonedDateTimeToStr(date), book.getId(), book.getTitle(),
-				user.getId(), user.getName());
+		return new ReservationDTO(id, DateUtils.zonedDateTimeToStr(date), book.getId(), book.getTitle(), user.getId(),
+				user.getName());
 	}
 
 }

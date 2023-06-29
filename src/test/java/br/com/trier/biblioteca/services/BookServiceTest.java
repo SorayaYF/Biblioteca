@@ -112,30 +112,35 @@ class BookServiceTest {
     @Test
     @DisplayName("Procurar livro por título")
     void findByTitle() {
-        List<Book> books = bookService.findByTitleStartsWithIgnoreCase("Livro");
-        assertEquals(2, books.size());
+		assertEquals(2, bookService.findByTitleStartsWithIgnoreCase("l").size());
+		var ex = assertThrows(ObjectNotFound.class, () -> bookService.findByTitleStartsWithIgnoreCase("x"));
+		assertEquals("Nenhum livro encontrado com título iniciando por x", ex.getMessage());
+
     }
 
     @Test
     @DisplayName("Procurar livro por gênero")
     void findByGenre() {
-        List<Book> books = bookService.findByGenre(Genre.Romance);
-        assertEquals(1, books.size());
+    	assertEquals(1, bookService.findByGenre(Genre.Romance).size());
+    	var ex = assertThrows(ObjectNotFound.class, () -> bookService.findByGenre(Genre.Acao));
+    	assertEquals("Nenhum livro encontrado com o gênero Acao", ex.getMessage());
     }
 
     @Test
     @DisplayName("Procurar livro por autor")
     void findByAuthor() {
         Author author = authorService.findById(1);
-        List<Book> books = bookService.findByAuthor(author);
-        assertEquals(1, books.size());
+    	assertEquals(1, bookService.findByAuthor(author).size());
+    	var ex = assertThrows(ObjectNotFound.class, () -> bookService.findByAuthor(authorService.findById(3)));
+    	assertEquals("Nenhum livro encontrado do autor Sergio", ex.getMessage());
     }
 
     @Test
     @DisplayName("Procurar livro por editora")
     void findByPublishingCompany() {
         PublishingCompany publishingCompany = publishingCompanyService.findById(1);
-        List<Book> books = bookService.findByPublishingCompany(publishingCompany);
-        assertEquals(1, books.size());
+    	assertEquals(1, bookService.findByPublishingCompany(publishingCompany).size());
+    	var ex = assertThrows(ObjectNotFound.class, () -> bookService.findByPublishingCompany(publishingCompanyService.findById(3)));
+    	assertEquals("Nenhum livro encontrado da editora QueroTudoQueESeu", ex.getMessage());
     }
 }

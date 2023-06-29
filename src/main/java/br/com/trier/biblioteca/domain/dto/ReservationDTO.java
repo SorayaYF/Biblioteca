@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReservationDTO {
-	
+
 	private Integer id;
 	private String date;
 	private Integer bookId;

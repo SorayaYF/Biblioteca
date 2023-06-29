@@ -17,7 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 public class PublishingCompany {
-	
+
 	@Setter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

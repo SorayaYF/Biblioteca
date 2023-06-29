@@ -12,11 +12,11 @@ import br.com.trier.biblioteca.services.exceptions.IntegrityViolation;
 import br.com.trier.biblioteca.services.exceptions.ObjectNotFound;
 
 @Service
-public class AuthorServiceImpl implements AuthorService{
+public class AuthorServiceImpl implements AuthorService {
 
 	@Autowired
 	private AuthorRepository repository;
-	
+
 	private void findByName(Author author) {
 		Author busca = repository.findByName(author.getName());
 		if (busca != null && busca.getId() != author.getId()) {
@@ -65,5 +65,5 @@ public class AuthorServiceImpl implements AuthorService{
 		}
 		return lista;
 	}
-	
+
 }

@@ -12,18 +12,18 @@ import br.com.trier.biblioteca.services.exceptions.IntegrityViolation;
 import br.com.trier.biblioteca.services.exceptions.ObjectNotFound;
 
 @Service
-public class PublishingCompanyServiceImpl implements PublishingCompanyService{
+public class PublishingCompanyServiceImpl implements PublishingCompanyService {
 
 	@Autowired
 	private PublishingCompanyRepository repository;
-	
+
 	private void findByName(PublishingCompany publishingCompany) {
 		PublishingCompany busca = repository.findByName(publishingCompany.getName());
 		if (busca != null && busca.getId() != publishingCompany.getId()) {
 			throw new IntegrityViolation("Nome já cadastrado: %s".formatted(publishingCompany.getName()));
 		}
 	}
-	
+
 	@Override
 	public PublishingCompany findById(Integer id) {
 		return repository.findById(id).orElseThrow(() -> new ObjectNotFound("A editora %s não existe".formatted(id)));

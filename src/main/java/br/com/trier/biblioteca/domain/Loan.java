@@ -23,31 +23,32 @@ import lombok.Setter;
 @Getter
 public class Loan {
 
-    @Setter
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_emprestimo")
-    private Integer id;
+	@Setter
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id_emprestimo")
+	private Integer id;
 
-    @Column(name = "data_emprestimo")
-    private ZonedDateTime loanDate;
+	@Column(name = "data_emprestimo")
+	private ZonedDateTime loanDate;
 
-    @Column(name = "data_devolucao")
-    private ZonedDateTime returnDate;
+	@Column(name = "data_devolucao")
+	private ZonedDateTime returnDate;
 
-    @ManyToOne
-    private Book book;
+	@ManyToOne
+	private Book book;
 
-    @ManyToOne
-    private User user;
+	@ManyToOne
+	private User user;
 
-    public Loan(LoanDTO dto, Book book, User user) {
-        this(dto.getId(), DateUtils.strToZonedDateTime(dto.getLoanDate()), DateUtils.strToZonedDateTime(dto.getReturnDate()), book, user);
-    }
+	public Loan(LoanDTO dto, Book book, User user) {
+		this(dto.getId(), DateUtils.strToZonedDateTime(dto.getLoanDate()),
+				DateUtils.strToZonedDateTime(dto.getReturnDate()), book, user);
+	}
 
-    public LoanDTO toDTO() {
-        return new LoanDTO(id, DateUtils.zonedDateTimeToStr(loanDate), DateUtils.zonedDateTimeToStr(returnDate), book.getId(), book.getTitle(),
-                user.getId(), user.getName());
-    }
+	public LoanDTO toDTO() {
+		return new LoanDTO(id, DateUtils.zonedDateTimeToStr(loanDate), DateUtils.zonedDateTimeToStr(returnDate),
+				book.getId(), book.getTitle(), user.getId(), user.getName());
+	}
 
 }

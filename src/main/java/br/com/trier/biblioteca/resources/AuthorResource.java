@@ -20,43 +20,43 @@ import br.com.trier.biblioteca.services.AuthorService;
 @RestController
 @RequestMapping("/authors")
 public class AuthorResource {
-	
+
 	@Autowired
 	private AuthorService service;
 
-	@Secured({"ROLE_USER"})
+	@Secured({ "ROLE_USER" })
 	@GetMapping("/{id}")
 	public ResponseEntity<Author> findById(@PathVariable Integer id) {
 		return ResponseEntity.ok(service.findById(id));
 	}
 
-	@Secured({"ROLE_ADMIN"})
+	@Secured({ "ROLE_ADMIN" })
 	@PostMapping
 	public ResponseEntity<Author> insert(@RequestBody Author author) {
 		return ResponseEntity.ok(service.insert(author));
 	}
-	
-	@Secured({"ROLE_USER"})
+
+	@Secured({ "ROLE_USER" })
 	@GetMapping
 	public ResponseEntity<List<Author>> listAll() {
 		return ResponseEntity.ok(service.listAll());
 	}
 
-	@Secured({"ROLE_ADMIN"})
+	@Secured({ "ROLE_ADMIN" })
 	@PutMapping("/{id}")
 	public ResponseEntity<Author> update(@PathVariable Integer id, @RequestBody Author author) {
 		author.setId(id);
 		return ResponseEntity.ok(service.update(author));
 	}
 
-	@Secured({"ROLE_ADMIN"})
+	@Secured({ "ROLE_ADMIN" })
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.ok().build();
 	}
 
-	@Secured({"ROLE_USER"})
+	@Secured({ "ROLE_USER" })
 	@GetMapping("/name/{name}")
 	public ResponseEntity<List<Author>> findByNameStartsWithIgnoreCase(@PathVariable String name) {
 		return ResponseEntity.ok(service.findByNameStartsWithIgnoreCase(name));

@@ -44,7 +44,7 @@ class AuthorServiceTest extends BaseTests{
 	@DisplayName("Listar Todos")
 	@Sql({ "classpath:/resources/sqls/autor.sql" })
 	void listAll() {
-		assertEquals(2, authorService.listAll().size());
+		assertEquals(3, authorService.listAll().size());
 	}
 
 	@Test
@@ -83,7 +83,7 @@ class AuthorServiceTest extends BaseTests{
 		assertEquals("Colleen Hoover", autor.getName());
 		autor = new Author(1, "Elayne Baeta");
 		authorService.update(autor);
-		assertEquals(2, authorService.listAll().size());
+		assertEquals(3, authorService.listAll().size());
 		assertEquals(1, autor.getId());
 		assertEquals("Elayne Baeta", autor.getName());
 	}
@@ -101,20 +101,20 @@ class AuthorServiceTest extends BaseTests{
 	@DisplayName("Excluir autor")
 	@Sql({ "classpath:/resources/sqls/autor.sql" })
 	void delete() {
-		assertEquals(2, authorService.listAll().size());
+		assertEquals(3, authorService.listAll().size());
 		authorService.delete(1);
-		assertEquals(1, authorService.listAll().size());
-		assertEquals(2, authorService.listAll().get(0).getId());
+		assertEquals(2, authorService.listAll().size());
+		assertEquals(3, authorService.listAll().get(0).getId());
 	}
 
 	@Test
 	@DisplayName("Excluir autor inexistente")
 	@Sql({ "classpath:/resources/sqls/autor.sql" })
 	void deleteNonexistent() {
-		assertEquals(2, authorService.listAll().size());
+		assertEquals(3, authorService.listAll().size());
 		var ex = assertThrows(ObjectNotFound.class, () -> authorService.delete(10));
 		assertEquals("O autor 10 não existe", ex.getMessage());
-		assertEquals(2, authorService.listAll().size());
+		assertEquals(3, authorService.listAll().size());
 		assertEquals(1, authorService.listAll().get(0).getId());
 	}
 

@@ -44,7 +44,7 @@ class PublishingCompanyServiceTest extends BaseTests{
 	@DisplayName("Listar Todos")
 	@Sql({ "classpath:/resources/sqls/editora.sql" })
 	void listAll() {
-		assertEquals(2, publishingCompanyService.listAll().size());
+		assertEquals(3, publishingCompanyService.listAll().size());
 	}
 
 	@Test
@@ -70,7 +70,7 @@ class PublishingCompanyServiceTest extends BaseTests{
 	void insertWithSameName() {
 		PublishingCompany editora = new PublishingCompany(null, "Galera");
 		var ex = assertThrows(IntegrityViolation.class, () -> publishingCompanyService.insert(editora));
-		assertEquals("Nome já cadastrado: Brasil", ex.getMessage());
+		assertEquals("Nome já cadastrado: Galera", ex.getMessage());
 	}
 
 	@Test
@@ -83,7 +83,7 @@ class PublishingCompanyServiceTest extends BaseTests{
 		assertEquals("Galera", editora.getName());
 		editora = new PublishingCompany(1, "Intrínseca");
 		publishingCompanyService.update(editora);
-		assertEquals(2, publishingCompanyService.listAll().size());
+		assertEquals(3, publishingCompanyService.listAll().size());
 		assertEquals(1, editora.getId());
 		assertEquals("Intrínseca", editora.getName());
 	}
@@ -101,9 +101,9 @@ class PublishingCompanyServiceTest extends BaseTests{
 	@DisplayName("Excluir editora")
 	@Sql({ "classpath:/resources/sqls/editora.sql" })
 	void delete() {
-		assertEquals(2, publishingCompanyService.listAll().size());
+		assertEquals(3, publishingCompanyService.listAll().size());
 		publishingCompanyService.delete(1);
-		assertEquals(1, publishingCompanyService.listAll().size());
+		assertEquals(2, publishingCompanyService.listAll().size());
 		assertEquals(2, publishingCompanyService.listAll().get(0).getId());
 	}
 
@@ -111,11 +111,11 @@ class PublishingCompanyServiceTest extends BaseTests{
 	@DisplayName("Excluir editora inexistente")
 	@Sql({ "classpath:/resources/sqls/editora.sql" })
 	void deleteNonexistent() {
-		assertEquals(2, publishingCompanyService.listAll().size());
+		assertEquals(3, publishingCompanyService.listAll().size());
 		var ex = assertThrows(ObjectNotFound.class, () -> publishingCompanyService.delete(10));
 		assertEquals("A editora 10 não existe", ex.getMessage());
-		assertEquals(2, publishingCompanyService.listAll().size());
-		assertEquals(1, publishingCompanyService.listAll().get(0).getId());
+		assertEquals(3, publishingCompanyService.listAll().size());
+		assertEquals(2, publishingCompanyService.listAll().get(0).getId());
 	}
 
 	@Test

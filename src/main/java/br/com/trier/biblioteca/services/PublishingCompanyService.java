@@ -5,7 +5,7 @@ import java.util.List;
 import br.com.trier.biblioteca.domain.PublishingCompany;
 
 public interface PublishingCompanyService {
-	
+
 	PublishingCompany findById(Integer id);
 
 	PublishingCompany insert(PublishingCompany publishingCompany);

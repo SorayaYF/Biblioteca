@@ -9,7 +9,7 @@ import br.com.trier.biblioteca.domain.Author;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Integer> {
-	
+
 	Author findByName(String name);
 
 	List<Author> findByNameStartsWithIgnoreCase(String name);

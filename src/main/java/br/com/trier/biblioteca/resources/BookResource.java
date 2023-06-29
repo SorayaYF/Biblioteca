@@ -33,7 +33,7 @@ public class BookResource {
 	@Autowired
 	private PublishingCompanyService publishingCompanyService;
 
-	@Secured({"ROLE_USER"})
+	@Secured({ "ROLE_USER" })
 	@GetMapping("/{id}")
 	public ResponseEntity<BookDTO> findById(@PathVariable Integer id) {
 		return ResponseEntity.ok(service.findById(id).toDTO());
@@ -45,7 +45,7 @@ public class BookResource {
 				publishingCompanyService.findById(bookDTO.getPublishingCompanyId()))).toDTO());
 	}
 
-	@Secured({"ROLE_USER"})
+	@Secured({ "ROLE_USER" })
 	@GetMapping
 	public ResponseEntity<List<BookDTO>> listAll() {
 		return ResponseEntity.ok(service.listAll().stream().map(book -> book.toDTO()).toList());
@@ -65,28 +65,27 @@ public class BookResource {
 		return ResponseEntity.ok().build();
 	}
 
-	@Secured({"ROLE_USER"})
+	@Secured({ "ROLE_USER" })
 	@GetMapping("/title/{name}")
 	public ResponseEntity<List<BookDTO>> findByTitleStartsWithIgnoreCase(@PathVariable String name) {
 		return ResponseEntity
 				.ok(service.findByTitleStartsWithIgnoreCase(name).stream().map(book -> book.toDTO()).toList());
 	}
 
-	@Secured({"ROLE_USER"})
+	@Secured({ "ROLE_USER" })
 	@GetMapping("/genre/{genre}")
 	public ResponseEntity<List<BookDTO>> findByGenre(@PathVariable Genre genre) {
-		return ResponseEntity
-				.ok(service.findByGenre(genre).stream().map(book -> book.toDTO()).toList());
+		return ResponseEntity.ok(service.findByGenre(genre).stream().map(book -> book.toDTO()).toList());
 	}
 
-	@Secured({"ROLE_USER"})
+	@Secured({ "ROLE_USER" })
 	@GetMapping("/author/{authorId}")
 	public ResponseEntity<List<BookDTO>> findByAuthor(@PathVariable Integer authorId) {
-		return ResponseEntity.ok(service.findByAuthor(authorService.findById(authorId)).stream()
-				.map(book -> book.toDTO()).toList());
+		return ResponseEntity
+				.ok(service.findByAuthor(authorService.findById(authorId)).stream().map(book -> book.toDTO()).toList());
 	}
 
-	@Secured({"ROLE_USER"})
+	@Secured({ "ROLE_USER" })
 	@GetMapping("/publishing-company/{companyId}")
 	public ResponseEntity<List<BookDTO>> findByPublishingCompany(@PathVariable Integer companyId) {
 		return ResponseEntity.ok(service.findByPublishingCompany(publishingCompanyService.findById(companyId)).stream()

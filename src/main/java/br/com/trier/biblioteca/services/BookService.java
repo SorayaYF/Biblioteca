@@ -8,7 +8,7 @@ import br.com.trier.biblioteca.domain.PublishingCompany;
 import br.com.trier.biblioteca.enuns.Genre;
 
 public interface BookService {
-	
+
 	Book findById(Integer id);
 
 	Book insert(Book book);
@@ -27,4 +27,3 @@ public interface BookService {
 
 	List<Book> findByPublishingCompany(PublishingCompany publishingCompany);
 }
-

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoanDTO {
-	
+
 	private Integer id;
 	private String loanDate;
 	private String returnDate;

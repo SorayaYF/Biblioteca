@@ -20,7 +20,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 public class Book {
-	
+
 	@Setter
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +29,10 @@ public class Book {
 
 	@Column(name = "titulo_livro")
 	private String title;
-	
+
 	@Column(name = "ISBN_livro")
 	private String ISBN;
-	
+
 	@Column(name = "genero_livro")
 	private Genre genre;
 
@@ -41,12 +41,13 @@ public class Book {
 
 	@ManyToOne
 	private PublishingCompany publishingCompany;
-	
+
 	public Book(BookDTO dto, Author author, PublishingCompany publishingCompany) {
 		this(dto.getId(), dto.getTitle(), dto.getISBN(), dto.getGenre(), author, publishingCompany);
 	}
 
 	public BookDTO toDTO() {
-		return new BookDTO(id, title, ISBN, genre, author.getId(), author.getName(), publishingCompany.getId(), publishingCompany.getName());
+		return new BookDTO(id, title, ISBN, genre, author.getId(), author.getName(), publishingCompany.getId(),
+				publishingCompany.getName());
 	}
 }

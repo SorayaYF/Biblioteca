@@ -5,7 +5,7 @@ import java.util.List;
 import br.com.trier.biblioteca.domain.Author;
 
 public interface AuthorService {
-	
+
 	Author findById(Integer id);
 
 	Author insert(Author author);

@@ -18,5 +18,5 @@ public class BookDTO {
 	private String authorName;
 	private Integer publishingCompanyId;
 	private String publishingCompanyName;
-	
+
 }
