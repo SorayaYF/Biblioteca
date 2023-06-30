@@ -52,7 +52,7 @@ class BookServiceTest {
     @DisplayName("Listar Todos")
     void listAll() {
         List<Book> books = bookService.listAll();
-        assertEquals(2, books.size());
+        assertEquals(3, books.size());
     }
 
     @Test
@@ -112,7 +112,7 @@ class BookServiceTest {
     @Test
     @DisplayName("Procurar livro por título")
     void findByTitle() {
-		assertEquals(2, bookService.findByTitleStartsWithIgnoreCase("l").size());
+		assertEquals(3, bookService.findByTitleStartsWithIgnoreCase("l").size());
 		var ex = assertThrows(ObjectNotFound.class, () -> bookService.findByTitleStartsWithIgnoreCase("x"));
 		assertEquals("Nenhum livro encontrado com título iniciando por x", ex.getMessage());
 
@@ -130,7 +130,7 @@ class BookServiceTest {
     @DisplayName("Procurar livro por autor")
     void findByAuthor() {
         Author author = authorService.findById(1);
-    	assertEquals(1, bookService.findByAuthor(author).size());
+    	assertEquals(2, bookService.findByAuthor(author).size());
     	var ex = assertThrows(ObjectNotFound.class, () -> bookService.findByAuthor(authorService.findById(3)));
     	assertEquals("Nenhum livro encontrado do autor Sergio", ex.getMessage());
     }

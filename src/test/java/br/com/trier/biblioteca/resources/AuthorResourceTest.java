@@ -145,8 +145,8 @@ public class AuthorResourceTest {
 	@Sql({ "classpath:/resources/sqls/limpa_tabelas.sql" })
 	@Sql({ "classpath:/resources/sqls/autor.sql" })
 	public void findByNameTest() {
-		ResponseEntity<List<Author>> response = getAuthors("/authors?name=Autor");
+		ResponseEntity<List<Author>> response = getAuthors("/authors/name/t");
 		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals(2, response.getBody().size());
+		assertEquals(1, response.getBody().size());
 	}
 }

@@ -1,0 +1,2 @@
+INSERT INTO emprestimo (id_emprestimo, data_emprestimo, data_devolucao, book_id_livro, user_id_usuario) VALUES (1, '2023-06-28', '2023-07-05', 1, 1);
+INSERT INTO emprestimo (id_emprestimo, data_emprestimo, data_devolucao, book_id_livro, user_id_usuario) VALUES (2, '2023-06-29', '2023-07-05', 2, 2);

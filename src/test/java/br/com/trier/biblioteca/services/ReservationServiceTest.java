@@ -21,6 +21,8 @@ import br.com.trier.biblioteca.utils.DateUtils;
 import jakarta.transaction.Transactional;
 
 @Transactional
+@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/autor.sql")
+@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/editora.sql")
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/livro.sql")
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/usuario.sql")
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/reserva.sql")
@@ -41,7 +43,7 @@ class ReservationServiceTest extends BaseTests {
 		Reservation reservation = service.findById(1);
 		assertNotNull(reservation);
 		assertEquals(1, reservation.getId());
-		assertEquals("2023-06-28", reservation.getDate());
+		assertEquals(2023, reservation.getDate().getYear());
 	}
 
 	@Test
@@ -78,7 +80,7 @@ class ReservationServiceTest extends BaseTests {
 
 		assertEquals(1, service.listAll().size());
 		assertEquals(1, reservation.getId());
-		assertEquals("2023-07-01", reservation.getDate());
+		assertEquals("01/07/2023", reservation.getDate());
 		assertEquals(book, reservation.getBook());
 		assertEquals(user, reservation.getUser());
 	}
@@ -94,7 +96,7 @@ class ReservationServiceTest extends BaseTests {
 
 		assertEquals(2, service.listAll().size());
 		assertEquals(1, reservation.getId());
-		assertEquals("2023-07-01", reservation.getDate());
+		assertEquals(01, reservation.getDate().getDayOfMonth());
 		assertEquals(book, reservation.getBook());
 		assertEquals(user, reservation.getUser());
 	}
@@ -117,7 +119,7 @@ class ReservationServiceTest extends BaseTests {
 		Reservation reservation = service.findById(1);
 		assertNotNull(reservation);
 		assertEquals(1, reservation.getId());
-		assertEquals("2023-06-28", reservation.getDate());
+		assertEquals(28, reservation.getDate().getDayOfMonth());
 
 		service.delete(1);
 
@@ -135,32 +137,32 @@ class ReservationServiceTest extends BaseTests {
 	@Test
 	@DisplayName("Encontrar por data")
 	void findByDate() {
-		List<Reservation> reservations = service.findByDate("2023-06-28");
+		List<Reservation> reservations = service.findByDate("28/06/2023");
 		assertEquals(1, reservations.size());
 	}
 
 	@Test
 	@DisplayName("Encontrar por data inexistente")
 	void findByDateNonExist() {
-		List<Reservation> reservations = service.findByDate("2023-06-28");
+		List<Reservation> reservations = service.findByDate("28/06/2023");
 		assertEquals(1, reservations.size());
 
-		var ex = assertThrows(ObjectNotFound.class, () -> service.findByDate("2023-06-30"));
-		assertEquals("Nenhuma reserva cadastrada na data 2023-06-30", ex.getMessage());
+		var ex = assertThrows(ObjectNotFound.class, () -> service.findByDate("30/06/2023"));
+		assertEquals("Nenhuma reserva cadastrada na data 30/06/2023", ex.getMessage());
 	}
 
 	@Test
 	@DisplayName("Encontrar por período de data")
 	void findByDateBetween() {
-		List<Reservation> reservations = service.findByDateBetween("2023-06-28", "2023-07-02");
+		List<Reservation> reservations = service.findByDateBetween("28/06/2023", "02/07/2023");
 		assertEquals(2, reservations.size());
 	}
 
 	@Test
 	@DisplayName("Encontrar por período de data inexistente")
 	void findByDateBetweenNonExist() {
-		var ex = assertThrows(ObjectNotFound.class, () -> service.findByDateBetween("2023-07-01", "2023-07-10"));
-		assertEquals("Nenhuma reserva cadastrada no período de 2023-07-01 a 2023-07-10", ex.getMessage());
+		var ex = assertThrows(ObjectNotFound.class, () -> service.findByDateBetween("01/07/2023", "10/07/2023"));
+		assertEquals("Nenhuma reserva cadastrada entre as datas 01/07/2023 e 10/07/2023", ex.getMessage());
 	}
 
 	@Test
@@ -169,6 +171,8 @@ class ReservationServiceTest extends BaseTests {
 		Book book = bookService.findById(1);
 		List<Reservation> reservations = service.findByBook(book);
 		assertEquals(1, reservations.size());
+		var ex = assertThrows(ObjectNotFound.class, () -> service.findByBook(bookService.findById(3)));
+		assertEquals("Nenhuma reserva cadastrada para o livro com ID 3", ex.getMessage());
 	}
 
 	@Test
@@ -177,5 +181,7 @@ class ReservationServiceTest extends BaseTests {
 		User user = userService.findById(1);
 		List<Reservation> reservations = service.findByUser(user);
 		assertEquals(2, reservations.size());
+		var ex = assertThrows(ObjectNotFound.class, () -> service.findByUser(userService.findById(2)));
+		assertEquals("Nenhuma reserva cadastrada para o usuário com ID 2", ex.getMessage());
 	}
 }

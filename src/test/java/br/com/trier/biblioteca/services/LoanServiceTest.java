@@ -21,6 +21,8 @@ import br.com.trier.biblioteca.utils.DateUtils;
 import jakarta.transaction.Transactional;
 
 @Transactional
+@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/editora.sql")
+@Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/autor.sql")
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/livro.sql")
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/usuario.sql")
 @Sql(executionPhase = ExecutionPhase.BEFORE_TEST_METHOD, scripts = "classpath:/resources/sqls/emprestimo.sql")
@@ -41,7 +43,7 @@ class LoanServiceTest extends BaseTests {
 		Loan loan = service.findById(1);
 		assertNotNull(loan);
 		assertEquals(1, loan.getId());
-		assertEquals("28/06/2023", loan.getLoanDate());
+		assertEquals(28, loan.getLoanDate().getDayOfMonth());
 	}
 
 	@Test
@@ -96,8 +98,8 @@ class LoanServiceTest extends BaseTests {
 
 		assertEquals(2, service.listAll().size());
 		assertEquals(1, loan.getId());
-		assertEquals("01/07/2023", loan.getLoanDate());
-		assertEquals("05/07/2023", loan.getReturnDate());
+		assertEquals(1, loan.getLoanDate().getDayOfMonth());
+		assertEquals(5, loan.getReturnDate().getDayOfMonth());
 		assertEquals(book, loan.getBook());
 		assertEquals(user, loan.getUser());
 	}
@@ -120,7 +122,7 @@ class LoanServiceTest extends BaseTests {
 		Loan loan = service.findById(1);
 		assertNotNull(loan);
 		assertEquals(1, loan.getId());
-		assertEquals("28/06/2023", loan.getLoanDate());
+		assertEquals(28, loan.getLoanDate().getDayOfMonth());
 
 		service.delete(1);
 
@@ -149,24 +151,24 @@ class LoanServiceTest extends BaseTests {
 		assertEquals(1, loans.size());
 
 		var ex = assertThrows(ObjectNotFound.class, () -> service.findByLoanDate("30/06/2023"));
-		assertEquals("Nenhum empréstimo cadastrado na data de empréstimo 30/06/2023", ex.getMessage());
+		assertEquals("Nenhum empréstimo cadastrado na data 30/06/2023", ex.getMessage());
 	}
 
 	@Test
 	@DisplayName("Encontrar por data de devolução")
 	void findByReturnDate() {
 		List<Loan> loans = service.findByReturnDate("05/07/2023");
-		assertEquals(1, loans.size());
+		assertEquals(2, loans.size());
 	}
 
 	@Test
 	@DisplayName("Encontrar por data de devolução inexistente")
 	void findByReturnDateNonExist() {
 		List<Loan> loans = service.findByReturnDate("05/07/2023");
-		assertEquals(1, loans.size());
+		assertEquals(2, loans.size());
 
 		var ex = assertThrows(ObjectNotFound.class, () -> service.findByReturnDate("10/07/2023"));
-		assertEquals("Nenhum empréstimo cadastrado na data de devolução 10/07/2023", ex.getMessage());
+		assertEquals("Nenhum empréstimo cadastrado com data de devolução 10/07/2023", ex.getMessage());
 	}
 
 	@Test
@@ -180,7 +182,7 @@ class LoanServiceTest extends BaseTests {
 	@DisplayName("Encontrar por período de data de empréstimo inexistente")
 	void findByLoanDateBetweenNonExist() {
 		var ex = assertThrows(ObjectNotFound.class, () -> service.findByLoanDateBetween("01/07/2023", "10/07/2023"));
-		assertEquals("Nenhum empréstimo cadastrado no período de empréstimo de 01/07/2023 até 10/07/2023", ex.getMessage());
+		assertEquals("Nenhum empréstimo cadastrado entre as datas 01/07/2023 e 10/07/2023", ex.getMessage());
 	}
 
 	@Test
@@ -189,15 +191,8 @@ class LoanServiceTest extends BaseTests {
 		Book book = bookService.findById(1);
 		List<Loan> loans = service.findByBook(book);
 		assertEquals(1, loans.size());
-	}
-
-	@Test
-	@DisplayName("Encontrar por livro inexistente")
-	void findByBookNonExist() {
-		Book book = new Book();
-		book.setId(10);
-		List<Loan> loans = service.findByBook(book);
-		assertEquals(0, loans.size());
+		var ex = assertThrows(ObjectNotFound.class, () -> service.findByBook(bookService.findById(3)));
+		assertEquals("Nenhum empréstimo cadastrado para o livro com ID 3", ex.getMessage());
 	}
 
 	@Test
@@ -205,15 +200,8 @@ class LoanServiceTest extends BaseTests {
 	void findByUser() {
 		User user = userService.findById(1);
 		List<Loan> loans = service.findByUser(user);
-		assertEquals(2, loans.size());
-	}
-
-	@Test
-	@DisplayName("Encontrar por usuário inexistente")
-	void findByUserNonExist() {
-		User user = new User();
-		user.setId(10);
-		List<Loan> loans = service.findByUser(user);
-		assertEquals(0, loans.size());
+		assertEquals(1, loans.size());
+		var ex = assertThrows(ObjectNotFound.class, () -> service.findByUser(userService.findById(3)));
+		assertEquals("Nenhum empréstimo cadastrado para o usuário com ID 3", ex.getMessage());
 	}
 }

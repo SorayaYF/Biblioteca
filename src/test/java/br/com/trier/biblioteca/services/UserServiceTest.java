@@ -44,7 +44,7 @@ class UserServiceTest extends BaseTests {
     @DisplayName("Listar Todos")
     @Sql({ "classpath:/resources/sqls/usuario.sql" })
     void listAll() {
-        assertEquals(2, userService.listAll().size());
+        assertEquals(3, userService.listAll().size());
     }
 
     @Test
@@ -69,10 +69,10 @@ class UserServiceTest extends BaseTests {
     @DisplayName("Cadastrar usuário com nome duplicado")
     @Sql({ "classpath:/resources/sqls/usuario.sql" })
     void insertWithSameName() {
-        UserDTO userDTO = new UserDTO(null, "User 1", "email3", "senha3", "USER");
+        UserDTO userDTO = new UserDTO(null, "User 2", "email4", "senha4", "USER");
         User user = new User(userDTO);
         var ex = assertThrows(IntegrityViolation.class, () -> userService.insert(user));
-        assertEquals("Nome já cadastrado: User 1", ex.getMessage());
+        assertEquals("Nome já cadastrado: User 2", ex.getMessage());
     }
 
     @Test
@@ -86,13 +86,13 @@ class UserServiceTest extends BaseTests {
 		assertEquals("email1", user.getEmail());
 		assertEquals("senha1", user.getPassword());
 		assertEquals("ADMIN,USER", user.getRoles());
-		user = new User(1, "User 3", "email3", "senha3", "ADMIN");
+		user = new User(1, "User 4", "email4", "senha4", "ADMIN");
 		userService.update(user);
-		assertEquals(2, userService.listAll().size());
+		assertEquals(3, userService.listAll().size());
 		assertEquals(1, user.getId());
-		assertEquals("User 3", user.getName());
-		assertEquals("email3", user.getEmail());
-		assertEquals("senha3", user.getPassword());
+		assertEquals("User 4", user.getName());
+		assertEquals("email4", user.getEmail());
+		assertEquals("senha4", user.getPassword());
 		assertEquals("ADMIN", user.getRoles());
     }
 
@@ -110,9 +110,9 @@ class UserServiceTest extends BaseTests {
     @DisplayName("Excluir usuário")
     @Sql({ "classpath:/resources/sqls/usuario.sql" })
     void delete() {
-        assertEquals(2, userService.listAll().size());
+        assertEquals(3, userService.listAll().size());
         userService.delete(1);
-        assertEquals(1, userService.listAll().size());
+        assertEquals(2, userService.listAll().size());
         assertEquals(2, userService.listAll().get(0).getId());
     }
 
@@ -120,10 +120,10 @@ class UserServiceTest extends BaseTests {
     @DisplayName("Excluir usuário inexistente")
     @Sql({ "classpath:/resources/sqls/usuario.sql" })
     void deleteNonexistent() {
-        assertEquals(2, userService.listAll().size());
+        assertEquals(3, userService.listAll().size());
         var ex = assertThrows(ObjectNotFound.class, () -> userService.delete(10));
         assertEquals("O usuário 10 não existe", ex.getMessage());
-        assertEquals(2, userService.listAll().size());
+        assertEquals(3, userService.listAll().size());
         assertEquals(1, userService.listAll().get(0).getId());
     }
 
@@ -131,7 +131,7 @@ class UserServiceTest extends BaseTests {
     @DisplayName("Procurar por nome")
     @Sql({ "classpath:/resources/sqls/usuario.sql" })
     void findByName() {
-        assertEquals(2, userService.findByNameStartsWithIgnoreCase("U").size());
+        assertEquals(3, userService.findByNameStartsWithIgnoreCase("U").size());
         var ex = assertThrows(ObjectNotFound.class, () -> userService.findByNameStartsWithIgnoreCase("X"));
         assertEquals("Nenhum nome de usuário inicia com X cadastrado", ex.getMessage());
     }
